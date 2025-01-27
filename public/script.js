@@ -1,3 +1,5 @@
+const { todo } = require("node:test");
+
 const ul = document.getElementById("ul");
 const button = document.getElementById("submit");
 const input = document.getElementById("inputText");
@@ -69,21 +71,35 @@ function render() {
 }
 
 function update() {
-  fetch("https://ws.progettimolinari.it/cache/set", {
-    method: "POST",
+  fetch("/todo/complete", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "key": myToken
+      
     },
-    body: JSON.stringify({
-      key: myKey,
-      value: JSON.stringify(list)
-    })
+    body: JSON.stringify(todo)
   })
   .then(response => response.json());
   
 }
+ 
+function deleteTodo() {
+  fetch("/todo/"+id, {
 
+    method: 'DELETE',
+
+    headers: {
+
+       "Content-Type": "application/json"
+
+    },
+
+ })
+
+ .then((response) => response.json());
+  
+}
+ 
 render();
 
 
