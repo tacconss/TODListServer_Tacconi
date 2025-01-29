@@ -1,3 +1,4 @@
+
 const http=require("http");
 
 const express = require("express");
@@ -21,16 +22,16 @@ app.use("/", express.static(path.join(__dirname, "public")));
 const todos = [];
 
 app.post("/todo/add", (req, res) => {
-
-   const todo = req.body.todo;
-
-   todo.id = "" + new Date().getTime();
-
-   todos.push(todo);
-
-   res.json({result: "Ok"});
-
-});
+    const { inputValue, completed = false } = req.body;
+    const todo = {
+      id: "" + new Date().getTime(), 
+      inputValue,
+      completed,
+    };
+    todos.push(todo);
+    res.json({ result: "Ok", todo });
+  });
+  
 
 app.get("/todo", (req, res) => {
 
@@ -40,8 +41,11 @@ app.get("/todo", (req, res) => {
 
 app.put("/todo/complete", (req, res) => {
 
+    console.log("entrato");
+
     const todo = req.body;
- 
+        
+        
     try {
  
        todos = todos.map((element) => {

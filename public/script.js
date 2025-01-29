@@ -1,4 +1,4 @@
-const { todo } = require("node:test");
+//const { todo } = require("node:test");
 
 const ul = document.getElementById("ul");
 const button = document.getElementById("submit");
@@ -77,7 +77,7 @@ function update() {
       "Content-Type": "application/json",
       
     },
-    body: JSON.stringify(todo)
+    body: JSON.stringify(list)
   })
   .then(response => response.json());
   
