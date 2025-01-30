@@ -8,31 +8,13 @@ const bodyParser = require('body-parser');
 
 //MYSQL
 
-const mysql = require('mysql');
 const fs = require('fs');
+
+const mysql = require('mysql');
+
 const conf = JSON.parse(fs.readFileSync('conf.json'));
 
-// Aggiungere il supporto SSL per Aiven
-const connection = mysql.createConnection({
-  host: conf.host,
-  user: conf.user,
-  password: conf.password,
-  database: conf.database,
-  port: conf.port,
-  ssl: { rejectUnauthorized: true }  // Abilita SSL
-});
-
-// Gestire eventuali errori di connessione
-connection.connect((err) => {
-  if (err) {
-    console.error("Errore di connessione al database:", err);
-    process.exit(1);  // Termina il server se non riesce a connettersi
-  }
-  console.log("Connesso al database Aiven!");
-});
-
-
-//const connection = mysql.createConnection(conf);
+const connection = mysql.createConnection(conf);
 
 //
 
