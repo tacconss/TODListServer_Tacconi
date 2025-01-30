@@ -81,7 +81,7 @@ app.delete("/todo/:id", (req, res) => {
 
 })
 app.put("/todo/modify", (req, res) => {
-   console.log("dentro");
+   console.log("entrato");
       let todo = req.body;
    
       try {

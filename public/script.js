@@ -108,20 +108,6 @@ function remove(id) {
       render();
     });
 }
-function modify(todo) {
-  
-  fetch("/todo/modify", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(todo),
-  })
-    .then((response) => response.json())
-    .then(() => {
-     todo.inputValue= modifyText.value;
-      render();
-    });
-}
+
 
 render();
