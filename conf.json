@@ -1,0 +1,17 @@
+{
+
+    "host": "mysql-ced436a-itis-8d5a.l.aivencloud.com",
+ 
+    "user": "avnadmin",
+ 
+    "password": "AVNS_thZfcChzs2y7gtToqxT",
+    
+    "port": 16761,
+
+    "database": "defaultdb"
+
+   
+ 
+ }
+
+ 
