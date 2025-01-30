@@ -1,4 +1,3 @@
-
 const http=require("http");
 
 const express = require("express");
@@ -19,64 +18,25 @@ const path = require('path');
 
 app.use("/", express.static(path.join(__dirname, "public")));
 
-const todos = [];
+let todos = [];
 
 app.post("/todo/add", (req, res) => {
-    const { inputValue, completed = false } = req.body;
-    const todo = {
-      id: "" + new Date().getTime(), 
-      inputValue,
-      completed,
-    };
-    todos.push(todo);
-    res.json({ result: "Ok", todo });
-  });
-  
+   const { inputValue, completed = false } = req.body;
+   const todo = {
+     id: "" + new Date().getTime(), 
+     inputValue,
+     completed,
+   };
+   todos.push(todo);
+   res.json({ result: "Ok", todo });
+ });
+ 
 
 app.get("/todo", (req, res) => {
-
+console.log(todos);
    res.json({todos: todos});
 
 });
-
-app.put("/todo/complete", (req, res) => {
-
-    console.log("entrato");
-
-    const todo = req.body;
-        
-        
-    try {
- 
-       todos = todos.map((element) => {
- 
-          if (element.id === todo.id) {
- 
-             element.completed = true;
- 
-          }
- 
-          return element;
- 
-       })
- 
-    } catch (e) {
- 
-       console.log(e);
- 
-    }
- 
-    res.json({result: "Ok"});
- 
- });
-
- app.delete("/todo/:id", (req, res) => {
-
-    todos = todos.filter((element) => element.id !== req.params.id);
- 
-    res.json({result: "Ok"});  
- 
- })
 
 const server = http.createServer(app);
 
@@ -85,3 +45,65 @@ server.listen(8080, () => {
   console.log("- server running");
 
 });
+
+app.put("/todo/complete", (req, res) => {
+console.log("dentro");
+   let todo = req.body;
+
+   try {
+
+      todos = todos.map((element) => {
+
+         if (element.id === todo.id) {
+            element.completed = !todo.completed;
+
+         }
+
+         return element;
+
+      })
+
+   } catch (e) {
+
+      console.log(e);
+
+   }
+
+   res.json({result: "Ok"});
+
+});
+
+app.delete("/todo/:id", (req, res) => {
+
+   todos = todos.filter((element) => element.id !== req.params.id);
+
+   res.json({result: "Ok"});  
+
+})
+app.put("/todo/modify", (req, res) => {
+   console.log("dentro");
+      let todo = req.body;
+   
+      try {
+   
+         todos = todos.map((element) => {
+   
+            if (element.id === todo.id) {
+   
+               element.inputValue = todo.inputValue;
+   
+            }
+   
+            return element;
+   
+         })
+   
+      } catch (e) {
+   
+         console.log(e);
+   
+      }
+   
+      res.json({result: "Ok"});
+   
+   });
