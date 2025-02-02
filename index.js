@@ -39,7 +39,8 @@ app.use(bodyParser.urlencoded({
 
 const path = require('path');
 
-app.use("/", express.static(path.join(__dirname, "public")));
+//app.use("/", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 let todos = [];
 
@@ -83,6 +84,7 @@ app.post("/todo/add", async (req, res) => {
 
  app.delete("/todo/:id", async (req, res) => {
    try {
+      console.log("ciao");
      await executeQuery("DELETE FROM todo WHERE id = ?", [req.params.id]);
      res.json({ result: "Ok" });
    } catch (error) {
@@ -90,6 +92,7 @@ app.post("/todo/add", async (req, res) => {
    }
  });
 
+  
    const executeQuery = (sql, params = []) => {
       return new Promise((resolve, reject) => {      
          connection.query(sql, params, function (err, result) {
@@ -148,11 +151,12 @@ const select = () => {
    }  
 const server = http.createServer(app);
 
-server.listen(8080, () => {
+server.listen(50, () => {
 
   console.log("- server running");
 
 });
+
 createTable()
    .then(() => {
      return console.log("creato")

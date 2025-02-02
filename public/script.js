@@ -1,11 +1,8 @@
 const ul = document.getElementById("ul");
-const button = document.getElementById("submit");
-const input = document.getElementById("inputText");
-let list = [];
-let count = 0;
+const buttonInvia = document.getElementById("submit");
+const inputText = document.getElementById("inputText");
+let lista = [];
 const myKey = "chiave";
-const modifyText= document.querySelector("#modificaText");
-const modifyButton = document.querySelector("#modifica")
 
 function loadList() {
   fetch("/todo", {
@@ -17,15 +14,48 @@ function loadList() {
   .then(response => response.json())
   .then(data => {
     console.log(data.todos);
-    list = data.todos;
+    lista = data.todos;
     render();
   })
 }
 loadList();
 
-button.onclick = () => {
+function render() {
+    let html = "";
+    lista.forEach((e, id) => {
+      let completo = e.completed ? "done" : "";
+      html += `<li id='li_${e.id}' class='divs ${completo}'>
+        ${e.inputValue}
+        <button type='button' class='pulsantiConferma' id='bottoneC_${id}'>conferma</button>
+        <button type='button' class='pulsantiElimina' id='bottoneE_${e.id}'>elimina</button>
+        
+  
+      </li>`;
+    });
+    ul.innerHTML = html;
+  
+    document.querySelectorAll(".pulsantiElimina").forEach((buttonElimina) => {
+      buttonElimina.onclick = () => {
+        const id = buttonElimina.id.replace("bottoneE_", "");
+        remove(id)
+        .then(loadList)
+      };
+    });
+  
+    document.querySelectorAll(".pulsantiConferma").forEach((buttonConferma) => {
+      buttonConferma.onclick = () => {
+        const id = buttonConferma.id.replace("bottoneC_", "");
+        update(id).then(loadList);
+      };
+    });
+  }
+
+
+
+
+buttonInvia.onclick = () => {
   const data = {
-    inputValue: input.value,
+    inputValue: inputText.value,
     completed: false,
   };
 
@@ -38,46 +68,18 @@ button.onclick = () => {
   })
     .then((response) => response.json())
     .then((result) => {
-      list.push(result.todo); 
+      lista.push(result.todo); 
       render();
-      input.value = ""; 
+      inputText.value = ""; 
     });
 };
 
-function render() {
-  let html = "";
-  list.forEach((element, id) => {
-    let completedClass = element.completed ? "done" : "";
-    html += `<li id='li_${element.id}' class='divs ${completedClass}'>
-      ${element.inputValue}
-      <button type='button' class='pulsantiConferma' id='bottoneC_${element.id}'>conferma</button>
-      <button type='button' class='pulsantiElimina' id='bottoneE_${element.id}'>elimina</button>
-      
-
-    </li>`;
-   
-  });
-  ul.innerHTML = html;
-
-  document.querySelectorAll(".pulsantiElimina").forEach((button) => {
-    button.onclick = () => {
-      const id = button.id.replace("bottoneE_", "");
-      remove(id);
-    };
-  });
-
-  document.querySelectorAll(".pulsantiConferma").forEach((button) => {
-    button.onclick = () => {
-      const id = button.id.replace("bottoneC_", "");
-      update(id);
-    };
-  });
- 
-}
 
 
-function update(id) {
-  const todo = list.find((item) => item.id === id);
+
+async function update(id) {
+    console.log(id);
+  const todo = lista[id];
   fetch("/todo/complete", {
     method: "PUT",
     headers: {
@@ -93,21 +95,43 @@ function update(id) {
         todo.completed=false
       } 
       render();
-    });
-}
-function remove(id) {
-  fetch(`/todo/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then(() => {
-      list = list.filter((item) => item.id !== id);
-      render();
+      console.log(todo);
+      console.log("lista"+lista)
     });
 }
 
+/*
+function modify(todo) {
+  fetch("/todo/modify", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(todo),
+  })
+    .then((response) => response.json())
+    .then(() => {
+     todo.inputValue= modifyText.value;
+      render();
+    });
+}
+    */
+
+async function remove(id) {
+    console.log(lista[0].id)
+    console.log(id)
+    fetch(`/todo/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then(() => {
+        lista = lista.filter((item) => item.id !== id);
+        console.log(lista)
+        render();
+      });
+  }
 
 render();

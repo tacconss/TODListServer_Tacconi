@@ -1,19 +1,12 @@
 {
 
-    "host": "mysql-ced436a-itis-8d5a.l.aivencloud.com",
- 
-    "user": "avnadmin",
- 
-    "password": "AVNS_thZfcChzs2y7gtToqxT",
-    
-    "port": 16761,
+   "host": "mysql-ced436a-itis-8d5a.l.aivencloud.com",
+   "user": "avnadmin",
+   "password": "AVNS_thZfcChzs2y7gtToqxT",
+   "database": "defaultdb",
+   "port": "16761",
+   "ssl": {
+       "ca": "fs.readFileSync(__dirname + '/ca.pem')"
+   }
 
-    "database": "defaultdb",
-
-   
- "ssl": {
-    "ca":"./ca.pem"
- }
 }
-
- 
